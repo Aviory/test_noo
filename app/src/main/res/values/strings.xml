@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Test</string>
+    <string name="txt_login">Login</string>
+    <string name="txt_pass">Pass</string>
+    <string name="auth_btn_txt">go</string>
+    <string name="main_title">Help in finding</string>
+    <string name="btn_comments">Comments</string>
+    <string name="card_id">id</string>
+    <string name="card_date_of_birth">date of birth</string>
+    <string name="card_name">name</string>
+    <string name="card_gender">gender</string>
+    <string name="card_region">region</string>
+    <string name="card_situation_description">situation description</string>
+    <string name="card_time_of_loss">time of loss</string>
+    <string name="card_time_of_request">time of request</string>
+    <string name="card_status">status</string>
+    <string name="btn_close">close</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- auth act. -->
+    <dimen name="auth_btn_margin_top">40dp</dimen>
+    <dimen name="auth_txt_width">200dp</dimen>
+    <dimen name="auth_txt_field_margin_bott">2dp</dimen>
+    <dimen name="auth_txt_margin_bott">10dp</dimen>
+    <dimen name="request_card_margin_txt">10dp</dimen>
+    <dimen name="item_card_line_width">2dp</dimen>
+</resources>
