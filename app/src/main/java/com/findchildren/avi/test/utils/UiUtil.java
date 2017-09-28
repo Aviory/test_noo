@@ -1,5 +1,6 @@
 package com.findchildren.avi.test.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
@@ -19,22 +20,9 @@ public class UiUtil {
     private static Toast mToast;
     FragmentTransaction fragmentTransaction;
 
-//    public static void showToast(Context context, int resString) {
-//        Handler h = new Handler(Looper.getMainLooper());
-//        h.post( metod(context, resString));
-//    }
-//
-//    private static Runnable metod(final Context context, final int resString) {
-//        Runnable r = new Runnable() {
-//            @Override
-//            public void run() {
-//                if (mToast == null || !mToast.getView().isShown())
-//                    mToast = Toast.makeText(context, resString, Toast.LENGTH_SHORT);
-//                mToast.show();
-//            }
-//        };
-//       return r;
-//    }
+    public static void showToast(Activity act, String msg){
+        Toast.makeText(act, msg, Toast.LENGTH_SHORT).show();
+    }
 
     public static void hideView(View view) {
         view.setVisibility(View.INVISIBLE);

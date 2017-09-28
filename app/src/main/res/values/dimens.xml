@@ -7,4 +7,5 @@
     <dimen name="auth_txt_margin_bott">10dp</dimen>
     <dimen name="request_card_margin_txt">10dp</dimen>
     <dimen name="item_card_line_width">2dp</dimen>
+    <dimen name="btn_comment_margin_bot">7dp</dimen>
 </resources>

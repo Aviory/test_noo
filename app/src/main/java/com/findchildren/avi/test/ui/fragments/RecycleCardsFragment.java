@@ -69,13 +69,16 @@ public class RecycleCardsFragment extends Fragment implements CardRecycleAdapter
         });
     }
     public void getFragmentComment(long position) {
-        final RecycleCommetsFragment recycleCommetsFragment = new RecycleCommetsFragment();
+        RecycleCommetsFragment recycleCommetsFragment = new RecycleCommetsFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putLong(Const.CURRENT_USER_ID, position);
+        recycleCommetsFragment.setArguments(bundle);
+
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.card_container, recycleCommetsFragment, Const.FRAGMENT_CHAT_TAG);
         fragmentTransaction.commit();
         getChildFragmentManager().beginTransaction().show(recycleCommetsFragment).commit();
-
-
 
 //        UiUtil.hideView(recyclerView);
     }

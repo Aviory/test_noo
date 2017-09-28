@@ -1,12 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/comment_recycle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
     </android.support.v7.widget.RecyclerView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_comments_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_weight="1"
+            android:layout_marginBottom="@dimen/btn_comment_margin_bot"
+            android:text="@string/btn_close"
+            style="@style/Base.TextAppearance.AppCompat.Button"/>
+        <Button
+            android:id="@+id/btn_add_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_weight="1"
+            android:layout_marginBottom="@dimen/btn_comment_margin_bot"
+            android:text="@string/txt_btn_add_comment"
+            style="@style/Base.TextAppearance.AppCompat.Button"/>
+    </LinearLayout>
 
 </LinearLayout>

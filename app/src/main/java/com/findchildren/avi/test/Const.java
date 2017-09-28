@@ -11,4 +11,6 @@ public class Const {
     public static final String FRAGMENT_CARD_TAG = "cardFragment";
     public static final String FRAGMENT_CHAT_TAG = "chatFragment";
 
+    public static final String CURRENT_USER_ID = "currentUser";
+    public static final String DIALOG_ADD_COMENT = "addComentDialog";
 }
