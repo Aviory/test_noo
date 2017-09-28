@@ -6,10 +6,13 @@ import com.findchildren.avi.test.models.Request;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 /**
  * Created by Avi on 20.09.2017.
@@ -17,16 +20,12 @@ import retrofit2.http.Part;
 
 public interface ApiService {
 
-
     @POST(" ")
     Call<String> getToken();
 
-//    @GET("/{userName}/{userPass}")
-//    Call<String> getToken(@Part("userName") String name, @Part("userPass") String pass);
+    @GET("search")
+    Call<List<Request>> getAll(@Query("offset") Integer offset, @Query("limit") Integer limit);
 
-    @GET("search?offset=0&limit=10")
-    Call<List<Request>> getAll();
-
-    @GET("search/${id}/comments?offset=0&limit=10")
-    Call<List<Comment>> getComments(@Part("userName") long id);
+    @GET("search/{id}/comments")
+    Call<List<Comment>> getComments(@Part("id") long id,@Query("offset") Integer offset, @Query("limit") Integer limit);
 }

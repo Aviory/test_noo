@@ -32,7 +32,7 @@ public class CommentRecycleAdapter extends RecyclerView.Adapter<CommentRecycleAd
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mCommentAuthor.setText(mList.get(position).getSenderName());
         holder.mCommentBody.setText(mList.get(position).getText());
-        holder.mCommentDate.setText(mList.get(position).getTimeOfUpdate());
+        holder.mCommentDate.setText(mList.get(position).getTimeOfCreate());
     }
 
     @Override

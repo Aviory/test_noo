@@ -8,6 +8,7 @@ public class Comment {
     long id;
     String senderName;
     String text;
+    String timeOfCreate;
 
     public long getId() {
         return id;
@@ -33,13 +34,13 @@ public class Comment {
         this.text = text;
     }
 
-    public String getTimeOfUpdate() {
-        return timeOfUpdate;
+    public String getTimeOfCreate() {
+        return timeOfCreate;
     }
 
-    public void setTimeOfUpdate(String timeOfUpdate) {
-        this.timeOfUpdate = timeOfUpdate;
+    public void setTimeOfCreate(String timeOfUpdate) {
+        this.timeOfCreate = timeOfUpdate;
     }
 
-    String timeOfUpdate;
+
 }

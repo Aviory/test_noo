@@ -54,7 +54,7 @@ public class RecycleCardsFragment extends Fragment implements CardRecycleAdapter
 
     private void searchAll(){
         ApiService apiService = ApiManager.getApi().create(ApiService.class);
-        apiService.getAll().enqueue(new Callback<List<Request>>() {
+        apiService.getAll(0,10).enqueue(new Callback<List<Request>>() {
             @Override
             public void onResponse(Call<List<Request>> call, Response<List<Request>> response) {
                 mCardList = response.body();
@@ -75,20 +75,7 @@ public class RecycleCardsFragment extends Fragment implements CardRecycleAdapter
         fragmentTransaction.commit();
         getChildFragmentManager().beginTransaction().show(recycleCommetsFragment).commit();
 
-        ApiService apiService = ApiManager.getApi().create(ApiService.class);
-        apiService.getComments(position).enqueue(new Callback<List<Comment>>() {
-            @Override
-            public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
-                LogUtil.log("TAG", "onResponse");
-                List<Comment> listComment = response.body();
-                recycleCommetsFragment.setmCommentList(listComment);
-            }
 
-            @Override
-            public void onFailure(Call<List<Comment>> call, Throwable t) {
-                LogUtil.log("TAG", "onFailure");
-            }
-        });
 
 //        UiUtil.hideView(recyclerView);
     }
