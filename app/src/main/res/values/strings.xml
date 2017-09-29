@@ -18,4 +18,7 @@
     <string name="txt_btn_add_comment">add comment</string>
     <string name="txt_dialog_btn_close">close</string>
     <string name="txt_dialog_btn_send">send</string>
+    <string name="logout">logout</string>
+    <string name="new_request">new request</string>
+
 </resources>

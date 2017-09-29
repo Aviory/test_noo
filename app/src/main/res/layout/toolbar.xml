@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar_actionbar"
+    android:layout_width="match_parent"
+    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    android:layout_height="?android:actionBarSize"
+    android:background="@color/cardview_dark_background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/new_request"
+            android:layout_width="@dimen/toolbar_btn_width"
+            android:layout_height="@dimen/toolbar_btn_width"
+            android:src="@drawable/plus"
+            android:scaleType="centerInside"
+            android:layout_toLeftOf="@id/logout"
+
+            android:layout_marginRight="@dimen/tolbar_margin_right"
+            style="@style/Base.Widget.AppCompat.ActionButton"/>
+
+        <ImageView
+            android:id="@+id/logout"
+            android:layout_width="@dimen/toolbar_btn_width"
+            android:layout_height="@dimen/toolbar_btn_width"
+            android:src="@drawable/logout"
+            android:scaleType="centerInside"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/tolbar_margin_right"
+            style="@style/Base.Widget.AppCompat.ActionButton"/>
+    </RelativeLayout>
+
+
+</android.support.v7.widget.Toolbar>
