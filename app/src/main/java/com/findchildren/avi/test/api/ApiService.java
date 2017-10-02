@@ -24,8 +24,8 @@ import retrofit2.http.Query;
 
 public interface ApiService {
 
-    @POST(" ")
-    Call<String> getToken();
+    @GET("search")
+    Call<List<Request>> getToken(@Query("offset") Integer offset, @Query("limit") Integer limit);
 
     @GET("search")
     Call<List<Request>> getAll(@Query("offset") Integer offset, @Query("limit") Integer limit);
@@ -36,5 +36,9 @@ public interface ApiService {
     @Headers("Content-Type:text/plain; charset=utf-8")
     @POST("search/{id}/comments")
     Call<RequestComment> sendMsg(@Path("id") long id, @Body String comments);
+
+    @Headers("Content-Type:text/plain; charset=utf-8")
+    @POST("search")
+    Call<String> sendNewRequest(@Body Request comments);
 
 }

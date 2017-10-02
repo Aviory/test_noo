@@ -29,11 +29,7 @@ public class Prefs {
         return getString(context, PREF_TOKEN, null);
     }
 
-    public static void  saveUserSession(Context context, String key, int value){
-        getPrefs(context).edit().putInt(key, value).commit();
-    }
-
-    public static int getUserSession(Context context, String key){
-        return getPrefs(context).getInt(key, 0);
+    public static void clearPrefs(Context context) {
+        getPrefs(context).edit().clear().apply();
     }
 }

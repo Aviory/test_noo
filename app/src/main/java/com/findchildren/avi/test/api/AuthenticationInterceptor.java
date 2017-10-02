@@ -11,9 +11,17 @@ import okhttp3.Response;
  */
 
 public class AuthenticationInterceptor implements Interceptor {
-
+    private Call callback;
+    interface Call{
+        void callback(Response response);
+    }
+    private Response response;
     private String authToken;
 
+    public AuthenticationInterceptor(String token, Call callback) {
+        this.authToken = token;
+        this.callback = callback;
+    }
     public AuthenticationInterceptor(String token) {
         this.authToken = token;
     }
@@ -21,11 +29,18 @@ public class AuthenticationInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request original = chain.request();
+        // Customize the request
 
-        Request.Builder builder = original.newBuilder()
-                .header("Authorization", authToken);
+        Request request = original.newBuilder()
+                .header("Accept", "application/json")
+                .header("Authorization", authToken)
+                .method(original.method(), original.body())
+                .build();
 
-        Request request = builder.build();
-        return chain.proceed(request);
+        Response response = chain.proceed(request);
+        // Customize or return the response
+        if(callback!=null)
+            callback.callback(response);
+        return response;
     }
 }

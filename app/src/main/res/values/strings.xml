@@ -20,5 +20,16 @@
     <string name="txt_dialog_btn_send">send</string>
     <string name="logout">logout</string>
     <string name="new_request">new request</string>
+    <string name="add_request">add request</string>
+    <string name="card_child_description">child description</string>
+    <string name="enter_date">ENTER DATE</string>
+    <string name="choose_date">choose date</string>
+    <string name="btn_ok">ок</string>
+    <string name="enter_date_time"><![CDATA[ENTER DATE & TIME]]></string>
+    <string name="choose_time">choose time</string>
+    <string name="card_date_of_loss">date of loss</string>
+    <string name="enter_time">ENTER TIME</string>
+    <string name="card_to_time_of_loss"> + TIME</string>
+
 
 </resources>

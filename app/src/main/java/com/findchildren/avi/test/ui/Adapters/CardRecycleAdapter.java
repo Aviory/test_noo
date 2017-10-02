@@ -1,5 +1,6 @@
 package com.findchildren.avi.test.ui.Adapters;
 
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.findchildren.avi.test.Colors;
 import com.findchildren.avi.test.R;
 import com.findchildren.avi.test.models.Request;
 
@@ -26,6 +28,7 @@ public class CardRecycleAdapter extends RecyclerView.Adapter<CardRecycleAdapter.
 
     public interface OnCardClicked{
         void onClickCard(int position);
+        void onScrollChange(int position);
     }
 
     @Override
@@ -46,7 +49,11 @@ public class CardRecycleAdapter extends RecyclerView.Adapter<CardRecycleAdapter.
                 mOnClick.onClickCard(position);
             }
         });
-        //todo  bagraund
+        if(mList.get(position).getStatus().equals("SEARCHING")){
+            holder.mContainerCardView.setBackgroundColor(Colors.RED);
+        }else
+            holder.mContainerCardView.setBackgroundColor(Colors.GREEN);
+
     }
     public void setCardOnClickListener(OnCardClicked mOnClick){
         this.mOnClick = mOnClick;
@@ -58,6 +65,9 @@ public class CardRecycleAdapter extends RecyclerView.Adapter<CardRecycleAdapter.
 
     @Override
     public int getItemCount() {
+        if(mList==null){
+            return 0;
+        }
         return mList.size();
     }
 

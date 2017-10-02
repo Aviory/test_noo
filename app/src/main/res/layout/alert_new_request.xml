@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/colorGray">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:columnCount="2"
+        android:orientation="horizontal"
+        android:layout_marginRight="@dimen/request_card_margin_txt"
+        android:layout_marginEnd="@dimen/request_card_margin_txt"
+        android:layout_marginLeft="@dimen/request_card_margin_txt"
+        android:layout_marginStart="@dimen/request_card_margin_txt"
+        android:layout_marginTop="@dimen/request_card_margin_txt"
+        android:id="@+id/gridLayout"
+        android:layout_weight="1">
+
+        <TextView
+            style="@style/Alert_New_Request_TV"
+            android:text="@string/card_name"/>
+        <EditText
+            android:id="@+id/alert_request_txt_name"
+            style="@style/Alert_New_Request_ET"
+            android:inputType="text"/>
+        <TextView
+            style="@style/Alert_New_Request_TV"
+            android:text="@string/card_date_of_birth"/>
+        <Button
+            android:id="@+id/alert_request_txt_birth"
+            style="@style/Alert_New_Request_ET"
+            android:clickable="true"
+            android:text="@string/enter_date"/>
+
+        <TextView
+            style="@style/Alert_New_Request_TV"
+            android:text="@string/card_gender"/>
+        <Spinner
+            android:id="@+id/alert_request_txt_sex"
+            style="@style/Alert_New_Request_spinner"
+            android:entries="@array/gender_list" />
+        <TextView
+            style="@style/Alert_New_Request_TV"
+            android:text="@string/card_child_description"/>
+
+        <EditText
+            android:id="@+id/alert_request_txt_child_description"
+            style="@style/Alert_New_Request_ET_multy"
+            android:inputType="textMultiLine"/>
+        <TextView
+            style="@style/Alert_New_Request_TV"
+            android:text="@string/card_region"/>
+        <EditText
+            android:id="@+id/alert_request_txt_region"
+            style="@style/Alert_New_Request_ET"
+            android:inputType="text"/>
+
+        <TextView
+            style="@style/Alert_New_Request_TV"
+            android:text="@string/card_situation_description"/>
+        <EditText
+            android:id="@+id/alert_request_txt_description"
+            style="@style/Alert_New_Request_ET_multy"
+            android:inputType="textMultiLine"/>
+
+        <TextView
+            style="@style/Alert_New_Request_TV"
+            android:text="@string/card_date_of_loss"/>
+        <Button
+            android:id="@+id/alert_request_txt_date_od_loss"
+            style="@style/Alert_New_Request_ET"
+            android:text="@string/enter_date"/>
+        <TextView
+            style="@style/Alert_New_Request_TV"
+            android:text="@string/card_time_of_loss"/>
+        <Button
+            android:id="@+id/alert_request_txt_time_od_loss"
+            style="@style/Alert_New_Request_ET"
+            android:text="@string/enter_time"/>
+        <TextView
+            style="@style/Alert_New_Request_TV"
+            android:text="@string/card_to_time_of_loss"/>
+        <Button
+            android:id="@+id/alert_request_txt_to_time_od_loss"
+            style="@style/Alert_New_Request_ET"
+            android:text="@string/enter_time"/>
+        <TextView
+            style="@style/Alert_New_Request_TV"
+            android:text="@string/card_status"/>
+        <Spinner
+            android:id="@+id/alert_request_txt_status"
+            style="@style/Alert_New_Request_spinner"
+            android:entries="@array/status_list" />
+
+    </GridLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/alert_btn_close"
+            style="@style/Alert_New_Request_Btn"
+            android:text="@string/btn_close"/>
+        <Button
+            android:id="@+id/btn_send_request"
+            style="@style/Alert_New_Request_Btn"
+            android:text="@string/add_request"/>
+    </LinearLayout>
+
+</LinearLayout>
+</ScrollView>

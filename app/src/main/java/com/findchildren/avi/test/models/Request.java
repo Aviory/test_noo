@@ -1,12 +1,52 @@
 package com.findchildren.avi.test.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
 /**
  * Created by Avi on 24.09.2017.
  */
 
-public class Request {
+public class Request implements Parcelable {
+    Long id;
+    String name;
+    String dateOfBirth;
+    String gender;
+    String childDescription;
+    String region;
+    String situationDescription;
+    String timeOfLoss;
+    String timeOfRequest;
+    String status;
+
+    public Request() {}
+
+    protected Request(Parcel in) {
+        name = in.readString();
+        dateOfBirth = in.readString();
+        gender = in.readString();
+        childDescription = in.readString();
+        region = in.readString();
+        situationDescription = in.readString();
+        timeOfLoss = in.readString();
+        timeOfRequest = in.readString();
+        status = in.readString();
+    }
+
+    public static final Creator<Request> CREATOR = new Creator<Request>() {
+        @Override
+        public Request createFromParcel(Parcel in) {
+            return new Request(in);
+        }
+
+        @Override
+        public Request[] newArray(int size) {
+            return new Request[size];
+        }
+    };
+
     public Long getId() {
         return id;
     }
@@ -87,14 +127,21 @@ public class Request {
         this.status = status;
     }
 
-    Long id;
-    String name;
-    String dateOfBirth;
-    String gender;
-    String childDescription;
-    String region;
-    String situationDescription;
-    String timeOfLoss;
-    String timeOfRequest;
-    String status;
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeString(dateOfBirth);
+        parcel.writeString(gender);
+        parcel.writeString(childDescription);
+        parcel.writeString(region);
+        parcel.writeString(situationDescription);
+        parcel.writeString(timeOfLoss);
+        parcel.writeString(timeOfRequest);
+        parcel.writeString(status);
+    }
 }

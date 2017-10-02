@@ -36,6 +36,12 @@ public class RecycleCardsFragment extends Fragment implements CardRecycleAdapter
     @BindView(R.id.recycle)
     protected RecyclerView recyclerView;
 
+
+    public static RecycleCardsFragment getInstance(){
+        RecycleCardsFragment mInstance = new RecycleCardsFragment();
+        return mInstance;
+    }
+
     private List<Request> mCardList;
     private CardRecycleAdapter mAdapter;
 
@@ -111,5 +117,10 @@ public class RecycleCardsFragment extends Fragment implements CardRecycleAdapter
             LogUtil.log("tag", "onClickCard: null "+mCardList.size());
 
         }
+    }
+
+    @Override
+    public void onScrollChange(int position) {
+
     }
 }
