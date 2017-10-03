@@ -29,7 +29,7 @@ import retrofit2.Response;
  * Created by Avi on 01.10.2017.
  */
 
-public class NewRequestFragment extends Fragment implements View.OnClickListener {
+public class RequestFragment extends Fragment implements View.OnClickListener {
 
     private Button mBtnClose;
     private Button mBtnSendMsg;

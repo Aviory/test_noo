@@ -14,7 +14,7 @@ import com.findchildren.avi.test.Const;
 import com.findchildren.avi.test.R;
 import com.findchildren.avi.test.api.ApiManager;
 import com.findchildren.avi.test.prefs.Prefs;
-import com.findchildren.avi.test.ui.fragments.NewRequestFragment;
+import com.findchildren.avi.test.ui.fragments.RequestFragment;
 import com.findchildren.avi.test.ui.fragments.RecycleCardsFragment;
 
 import butterknife.BindView;
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.new_request:
-                NewRequestFragment alertNewRequest = new NewRequestFragment();
+                RequestFragment alertNewRequest = new RequestFragment();
                 addFrag(alertNewRequest,Const.FRAGMENT_NEWREQUEST_TAG);
                 break;
         }

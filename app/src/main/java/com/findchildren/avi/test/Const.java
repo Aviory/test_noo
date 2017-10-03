@@ -17,4 +17,5 @@ public class Const {
     public static final String DATE_PIKER = "datePicker";
     public static final String PIKER_TIME = "pikerTime";
     public static final String FRAGMENT_UPDATE_REQUEST_TAG = "upRequest";
+    public static final String CHANGE_COMMENT = "chahgeComment";
 }
