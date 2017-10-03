@@ -21,6 +21,17 @@ import butterknife.ButterKnife;
 
 public class CommentRecycleAdapter extends RecyclerView.Adapter<CommentRecycleAdapter.ViewHolder> {
     private List<Comment> mList;
+    private OnCommentClicked listener;
+
+    public void setListener(OnCommentClicked listener) {
+        this.listener = listener;
+    }
+
+    public interface OnCommentClicked{
+        void onClickComment(int position);
+        void onScrollChange(int position);
+        void onLongClick(int position);
+    }
 
     @Override
     public CommentRecycleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -29,10 +40,16 @@ public class CommentRecycleAdapter extends RecyclerView.Adapter<CommentRecycleAd
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.mCommentAuthor.setText(mList.get(position).getSenderName());
         holder.mCommentBody.setText(mList.get(position).getText());
         holder.mCommentDate.setText(mList.get(position).getTimeOfCreate());
+        holder.mCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClickComment(position);
+            }
+        });
     }
 
     @Override
