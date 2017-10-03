@@ -17,6 +17,7 @@ import com.findchildren.avi.test.api.ApiService;
 import com.findchildren.avi.test.models.Comment;
 import com.findchildren.avi.test.ui.Adapters.CommentRecycleAdapter;
 import com.findchildren.avi.test.ui.alerts.AlertAddComent;
+import com.findchildren.avi.test.ui.alerts.AlertChangeComment;
 import com.findchildren.avi.test.utils.LogUtil;
 
 import java.util.List;
@@ -31,7 +32,7 @@ import retrofit2.Response;
  * Created by Avi on 28.09.2017.
  */
 
-public class RecycleCommetsFragment extends Fragment implements View.OnClickListener {
+public class RecycleCommetsFragment extends Fragment implements View.OnClickListener, CommentRecycleAdapter.OnCommentClicked {
 
     @BindView(R.id.comment_recycle)
     protected RecyclerView recyclerView;
@@ -42,6 +43,9 @@ public class RecycleCommetsFragment extends Fragment implements View.OnClickList
 
     private List<Comment> mCommentList;
     private CommentRecycleAdapter mAdapter;
+    private int currentComment;
+    AlertChangeComment alertChangeComment;
+
 
     @Nullable
     @Override
@@ -52,13 +56,11 @@ public class RecycleCommetsFragment extends Fragment implements View.OnClickList
         mAdapter = new CommentRecycleAdapter();
         btnAddComment.setOnClickListener(this);
         btnCommentClose.setOnClickListener(this);
-        setmCommentList();
-//        mAdapter.setCardOnClickListener(this);
-
+        getCommentList();
         return rootView;
     }
 
-    public void setmCommentList() {
+    public void getCommentList() {
         Long id = getArguments().getLong(Const.CURRENT_USER_ID);
         ApiService apiService = ApiManager.getApi().create(ApiService.class);
         apiService.getComments(id, 0,10).enqueue(new Callback<List<Comment>>() {
@@ -68,6 +70,7 @@ public class RecycleCommetsFragment extends Fragment implements View.OnClickList
                 List<Comment> listComment = response.body();
                 mAdapter.setList(listComment);
                 recyclerView.setAdapter(mAdapter);
+                mCommentList = listComment;
             }
 
             @Override
@@ -75,7 +78,6 @@ public class RecycleCommetsFragment extends Fragment implements View.OnClickList
                 LogUtil.log("TAG", "onFailure");
             }
         });
-
     }
 
     @Override
@@ -89,6 +91,41 @@ public class RecycleCommetsFragment extends Fragment implements View.OnClickList
                 RecycleCardsFragment main = (RecycleCardsFragment) getActivity().getSupportFragmentManager().findFragmentByTag(Const.FRAGMENT_MAIN_TAG);
                 main.removeFrag(this);
                 break;
+            case R.id.btn_delete:
+                removeComent();
+                alertChangeComment.dismiss();
+                break;
+            case R.id.btn_update:
+                updateComment();
+                alertChangeComment.dismiss();
+                break;
         }
+    }
+
+    private void updateComment() {
+
+    }
+
+    private void removeComent() {
+
+    }
+
+    @Override
+    public void onClickComment(int position) {
+        alertChangeComment = new AlertChangeComment();
+        alertChangeComment.setOnClick(this);
+        alertChangeComment.show(getFragmentManager(),Const.CHANGE_COMMENT);
+        currentComment = position;
+    }
+
+    @Override
+    public void onScrollChange(int position) {
+        ApiService apiService = ApiManager.getApi().create(ApiService.class);
+//        apiService.
+    }
+
+    @Override
+    public void onLongClick(int position) {
+
     }
 }
