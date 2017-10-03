@@ -45,6 +45,13 @@ public class RecycleCardsFragment extends Fragment implements CardRecycleAdapter
     private List<Request> mCardList;
     private CardRecycleAdapter mAdapter;
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        LogUtil.log("tag", "onStart: ");
+        searchAll();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -53,8 +60,6 @@ public class RecycleCardsFragment extends Fragment implements CardRecycleAdapter
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new CardRecycleAdapter();
         mAdapter.setCardOnClickListener(this);
-        searchAll();
-
         return rootView;
     }
 

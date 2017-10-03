@@ -92,18 +92,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </GridLayout>
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_alignParentBottom="true"
+       android:orientation="horizontal">
+       <Button
+           android:id="@+id/btn_close"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_weight="1"
+           android:text="@string/btn_close"/>
+       <Button
+           android:id="@+id/btn_delete"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_weight="1"
+           android:text="@string/btn_delete"/>
+       <Button
+           android:id="@+id/btn_update_request"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_weight="1"
+           android:text="@string/btn_update"/>
 
-    <Button
-        android:id="@+id/btn_get_comments"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/btn_comments"/>
-    <Button
-        android:id="@+id/btn_close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="@string/btn_close"/>
+       <Button
+           android:id="@+id/btn_get_comments"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_weight="1"
+           android:text="@string/btn_comments"/>
+
+   </LinearLayout>
 </RelativeLayout>

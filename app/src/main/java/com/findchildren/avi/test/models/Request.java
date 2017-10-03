@@ -3,6 +3,8 @@ package com.findchildren.avi.test.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.Date;
 
 /**
@@ -10,42 +12,28 @@ import java.util.Date;
  */
 
 public class Request implements Parcelable {
+    @Expose
     Long id;
+    @Expose
     String name;
+    @Expose
     String dateOfBirth;
+    @Expose
     String gender;
+    @Expose
     String childDescription;
+    @Expose
     String region;
+    @Expose
     String situationDescription;
+    @Expose
     String timeOfLoss;
+    @Expose
     String timeOfRequest;
+    @Expose
     String status;
 
     public Request() {}
-
-    protected Request(Parcel in) {
-        name = in.readString();
-        dateOfBirth = in.readString();
-        gender = in.readString();
-        childDescription = in.readString();
-        region = in.readString();
-        situationDescription = in.readString();
-        timeOfLoss = in.readString();
-        timeOfRequest = in.readString();
-        status = in.readString();
-    }
-
-    public static final Creator<Request> CREATOR = new Creator<Request>() {
-        @Override
-        public Request createFromParcel(Parcel in) {
-            return new Request(in);
-        }
-
-        @Override
-        public Request[] newArray(int size) {
-            return new Request[size];
-        }
-    };
 
     public Long getId() {
         return id;
@@ -132,6 +120,18 @@ public class Request implements Parcelable {
         return 0;
     }
 
+    protected Request(Parcel in) {
+        name = in.readString();
+        dateOfBirth = in.readString();
+        gender = in.readString();
+        childDescription = in.readString();
+        region = in.readString();
+        situationDescription = in.readString();
+        timeOfLoss = in.readString();
+        timeOfRequest = in.readString();
+        status = in.readString();
+    }
+
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(name);
@@ -144,4 +144,16 @@ public class Request implements Parcelable {
         parcel.writeString(timeOfRequest);
         parcel.writeString(status);
     }
+
+    public static final Creator<Request> CREATOR = new Creator<Request>() {
+        @Override
+        public Request createFromParcel(Parcel in) {
+            return new Request(in);
+        }
+
+        @Override
+        public Request[] newArray(int size) {
+            return new Request[size];
+        }
+    };
 }

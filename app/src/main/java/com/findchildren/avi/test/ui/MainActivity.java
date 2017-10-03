@@ -6,9 +6,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -17,7 +14,7 @@ import com.findchildren.avi.test.Const;
 import com.findchildren.avi.test.R;
 import com.findchildren.avi.test.api.ApiManager;
 import com.findchildren.avi.test.prefs.Prefs;
-import com.findchildren.avi.test.ui.alerts.AlertNewRequest;
+import com.findchildren.avi.test.ui.fragments.NewRequestFragment;
 import com.findchildren.avi.test.ui.fragments.RecycleCardsFragment;
 
 import butterknife.BindView;
@@ -80,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.new_request:
-                AlertNewRequest alertNewRequest = new AlertNewRequest();
+                NewRequestFragment alertNewRequest = new NewRequestFragment();
                 addFrag(alertNewRequest,Const.FRAGMENT_NEWREQUEST_TAG);
                 break;
         }

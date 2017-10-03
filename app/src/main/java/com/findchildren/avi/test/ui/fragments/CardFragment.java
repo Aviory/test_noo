@@ -11,10 +11,19 @@ import android.widget.TextView;
 
 import com.findchildren.avi.test.Const;
 import com.findchildren.avi.test.R;
+import com.findchildren.avi.test.api.ApiManager;
+import com.findchildren.avi.test.api.ApiService;
 import com.findchildren.avi.test.models.Request;
+import com.findchildren.avi.test.ui.MainActivity;
+import com.findchildren.avi.test.utils.LogUtil;
+import com.findchildren.avi.test.utils.UiUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Avi on 27.09.2017.
@@ -44,6 +53,10 @@ public class CardFragment extends Fragment implements View.OnClickListener {
     protected Button mBtnClose;
     @BindView(R.id.btn_get_comments)
     protected Button mBtnGetComments;
+    @BindView(R.id.btn_update_request)
+    protected Button mBtnUpdate;
+    @BindView(R.id.btn_delete)
+    protected Button mBtnDelete;
     private Request request;
 
 
@@ -60,12 +73,15 @@ public class CardFragment extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
         mBtnClose.setOnClickListener(this);
         mBtnGetComments.setOnClickListener(this);
+        mBtnUpdate.setOnClickListener(this);
+        mBtnDelete.setOnClickListener(this);
         init();
     }
 
     public void setCard(Request request){
       this.request = request;
     }
+
     private void init(){
         if(request.getId()!=null)
             mTxtId.setText(String.valueOf(request.getId()));
@@ -93,20 +109,51 @@ public class CardFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_close:
                 onBackPressed();
                 break;
+            case R.id.btn_update_request:
+                sendUpdate();
+                break;
+            case R.id.btn_delete:
+                sendDelete();
+                break;
             case R.id.btn_get_comments:
                 RecycleCardsFragment main = (RecycleCardsFragment) getActivity().getSupportFragmentManager().findFragmentByTag(Const.FRAGMENT_MAIN_TAG);
                 main.getFragmentComment(request.getId());
                 break;
         }
     }
+
+    private void sendDelete() {
+        ApiService apiService = ApiManager.getApi().create(ApiService.class);
+        apiService.deleteRequest(request.getId()).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                LogUtil.log("TAG", "onFailure: "+response.message());
+                LogUtil.log("TAG", "onFailure: "+response.body());
+                if(response.code()>=200 && response.code()<=208){
+                    onBackPressed();
+                    UiUtil.showToast(getActivity(), "request successful remove");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                LogUtil.log("TAG", "onFailure: "+t.getMessage());
+            }
+        });
+    }
+
+    private void sendUpdate() {
+        UpdateRequestFragment alertUpRequest = new UpdateRequestFragment();
+        alertUpRequest.setRequest(request);
+        MainActivity main = (MainActivity) getActivity();
+        main.addFrag(alertUpRequest,Const.FRAGMENT_UPDATE_REQUEST_TAG);
+//        ApiService apiService = ApiManager.getApi().create(ApiService.class);
+//        apiService.updateRequest(request.getId(),)
+    }
+
     private void onBackPressed(){
         RecycleCardsFragment main = (RecycleCardsFragment) getActivity().getSupportFragmentManager().findFragmentByTag(Const.FRAGMENT_MAIN_TAG);
         main.removeFrag(this);
-
-//        FragmentManager fm = getActivity().getSupportFragmentManager();
-//        if (fm.getBackStackEntryCount() > 0)
-//            fm.popBackStack();
-
     }
 }
 

@@ -26,14 +26,14 @@
             style="@style/Alert_New_Request_TV"
             android:text="@string/card_name"/>
         <EditText
-            android:id="@+id/alert_request_txt_name"
+            android:id="@+id/frg_request_txt_name"
             style="@style/Alert_New_Request_ET"
             android:inputType="text"/>
         <TextView
             style="@style/Alert_New_Request_TV"
             android:text="@string/card_date_of_birth"/>
         <Button
-            android:id="@+id/alert_request_txt_birth"
+            android:id="@+id/frg_request_txt_birth"
             style="@style/Alert_New_Request_ET"
             android:clickable="true"
             android:text="@string/enter_date"/>
@@ -42,7 +42,7 @@
             style="@style/Alert_New_Request_TV"
             android:text="@string/card_gender"/>
         <Spinner
-            android:id="@+id/alert_request_txt_sex"
+            android:id="@+id/frg_request_txt_sex"
             style="@style/Alert_New_Request_spinner"
             android:entries="@array/gender_list" />
         <TextView
@@ -57,7 +57,7 @@
             style="@style/Alert_New_Request_TV"
             android:text="@string/card_region"/>
         <EditText
-            android:id="@+id/alert_request_txt_region"
+            android:id="@+id/frg_request_txt_region"
             style="@style/Alert_New_Request_ET"
             android:inputType="text"/>
 
@@ -73,28 +73,28 @@
             style="@style/Alert_New_Request_TV"
             android:text="@string/card_date_of_loss"/>
         <Button
-            android:id="@+id/alert_request_txt_date_od_loss"
-            style="@style/Alert_New_Request_ET"
+            android:id="@+id/frg_request_txt_date_od_loss"
+            android:entries="@array/time_list"
             android:text="@string/enter_date"/>
         <TextView
             style="@style/Alert_New_Request_TV"
             android:text="@string/card_time_of_loss"/>
         <Button
-            android:id="@+id/alert_request_txt_time_od_loss"
+            android:id="@+id/frg_request_txt_time_od_loss"
             style="@style/Alert_New_Request_ET"
             android:text="@string/enter_time"/>
         <TextView
             style="@style/Alert_New_Request_TV"
             android:text="@string/card_to_time_of_loss"/>
-        <Button
-            android:id="@+id/alert_request_txt_to_time_od_loss"
+        <Spinner
+            android:id="@+id/frg_request_txt_to_time_od_loss"
             style="@style/Alert_New_Request_ET"
-            android:text="@string/enter_time"/>
+            android:entries="@array/time_list"/>
         <TextView
             style="@style/Alert_New_Request_TV"
             android:text="@string/card_status"/>
         <Spinner
-            android:id="@+id/alert_request_txt_status"
+            android:id="@+id/frg_request_txt_status"
             style="@style/Alert_New_Request_spinner"
             android:entries="@array/status_list" />
 
@@ -106,7 +106,7 @@
         android:weightSum="2">
 
         <Button
-            android:id="@+id/alert_btn_close"
+            android:id="@+id/frg_btn_close"
             style="@style/Alert_New_Request_Btn"
             android:text="@string/btn_close"/>
         <Button

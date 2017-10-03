@@ -9,4 +9,13 @@
         <item>REJECTED</item>
         <item>FOUND</item>
     </string-array>
+    <string-array name="time_list">
+        <item>0000</item>
+        <item>0100</item>
+        <item>0200</item>
+        <item>0300</item>
+        <item>0400</item>
+        <item>0500</item>
+        <item>0600</item>
+    </string-array>
 </resources>

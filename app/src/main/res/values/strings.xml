@@ -4,7 +4,7 @@
     <string name="txt_pass">Pass</string>
     <string name="auth_btn_txt">go</string>
     <string name="main_title">Help in finding</string>
-    <string name="btn_comments">Comments</string>
+    <string name="btn_comments">Comment</string>
     <string name="card_id">id</string>
     <string name="card_date_of_birth">date of birth</string>
     <string name="card_name">name</string>
@@ -30,6 +30,8 @@
     <string name="card_date_of_loss">date of loss</string>
     <string name="enter_time">ENTER TIME</string>
     <string name="card_to_time_of_loss"> + TIME</string>
+    <string name="btn_update">update</string>
+    <string name="btn_delete">delete</string>
 
 
 </resources>
