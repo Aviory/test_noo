@@ -48,7 +48,7 @@ public class AlertChangeComment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.alert_change_comment, container, false);
-        mBtnRemove =  v.findViewById(R.id.btn_delete);
+        mBtnRemove =  v.findViewById(R.id.btn_remove);
         mBtnUpdate = v.findViewById(R.id.btn_update);
 
         mBtnRemove.setOnClickListener(onClick);

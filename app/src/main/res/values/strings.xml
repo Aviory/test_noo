@@ -32,6 +32,7 @@
     <string name="card_to_time_of_loss"> + TIME</string>
     <string name="btn_update">update</string>
     <string name="btn_delete">delete</string>
+    <string name="btn_remove">remove</string>
 
 
 </resources>

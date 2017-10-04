@@ -68,9 +68,12 @@ public class RecycleCardsFragment extends Fragment implements CardRecycleAdapter
         apiService.getAll(0,10).enqueue(new Callback<List<Request>>() {
             @Override
             public void onResponse(Call<List<Request>> call, Response<List<Request>> response) {
-                mCardList = response.body();
-                mAdapter.setListRequest(mCardList);
-                recyclerView.setAdapter(mAdapter);
+                if(response.code()>=200 && response.code()<=202) {
+
+                    mCardList = response.body();
+                    mAdapter.setListRequest(mCardList);
+                    recyclerView.setAdapter(mAdapter);
+                }
             }
 
             @Override

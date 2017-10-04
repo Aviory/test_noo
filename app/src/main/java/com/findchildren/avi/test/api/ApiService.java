@@ -53,10 +53,11 @@ public interface ApiService {
     @POST("search/{id}/comments")
     Call<RequestComment> sendMsg(@Path("id") long id, @Body String comments);
 
-    @PUT("children/{id}/comments/{comId}")
-    Call<Comment> updateComment(@Path("id") long id,@Path("comId") long comId, @Body Comment request);
+    @Headers("Content-Type:text/plain; charset=utf-8")
+    @PUT("search/{id}/comments/{comId}")
+    Call<RequestComment> updateComment(@Path("id") long id,@Path("comId") long comId, @Body String msg);
 
-    @DELETE("children/{id}/comments/{comId}")
+    @DELETE("search/{id}/comments/{comId}")
     Call<ResponseBody> removeComment(@Path("id") long id,@Path("comId") long comId );
 
 }

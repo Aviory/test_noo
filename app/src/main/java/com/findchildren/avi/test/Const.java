@@ -18,4 +18,8 @@ public class Const {
     public static final String PIKER_TIME = "pikerTime";
     public static final String FRAGMENT_UPDATE_REQUEST_TAG = "upRequest";
     public static final String CHANGE_COMMENT = "chahgeComment";
+    public static final String CURRENT_MSG_ID = "currentMsgID";
+    public static final String ALERT_TYPE_ADD_MSG = "addMsg";
+    public static final String ALERT_TYPE_UPDATE_MSG = "updateMsg";
+
 }
