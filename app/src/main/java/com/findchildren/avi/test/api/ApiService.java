@@ -54,9 +54,9 @@ public interface ApiService {
     Call<RequestComment> sendMsg(@Path("id") long id, @Body String comments);
 
     @PUT("children/{id}/comments/{comId}")
-    Call<String> updateComment(@Path("id") long id,@Path("comId") long comId, @Body Comment request);
+    Call<Comment> updateComment(@Path("id") long id,@Path("comId") long comId, @Body Comment request);
 
     @DELETE("children/{id}/comments/{comId}")
-    Call<String> deleteComment(@Path("id") long id,@Path("comId") long comId );
+    Call<ResponseBody> removeComment(@Path("id") long id,@Path("comId") long comId );
 
 }

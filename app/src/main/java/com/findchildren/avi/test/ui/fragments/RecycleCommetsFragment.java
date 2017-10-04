@@ -19,11 +19,13 @@ import com.findchildren.avi.test.ui.Adapters.CommentRecycleAdapter;
 import com.findchildren.avi.test.ui.alerts.AlertAddComent;
 import com.findchildren.avi.test.ui.alerts.AlertChangeComment;
 import com.findchildren.avi.test.utils.LogUtil;
+import com.findchildren.avi.test.utils.UiUtil;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,6 +46,7 @@ public class RecycleCommetsFragment extends Fragment implements View.OnClickList
     private List<Comment> mCommentList;
     private CommentRecycleAdapter mAdapter;
     private int currentComment;
+    private long currentUser;
     AlertChangeComment alertChangeComment;
 
 
@@ -54,6 +57,7 @@ public class RecycleCommetsFragment extends Fragment implements View.OnClickList
         ButterKnife.bind(this, rootView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new CommentRecycleAdapter();
+        mAdapter.setListener(this);
         btnAddComment.setOnClickListener(this);
         btnCommentClose.setOnClickListener(this);
         getCommentList();
@@ -61,9 +65,9 @@ public class RecycleCommetsFragment extends Fragment implements View.OnClickList
     }
 
     public void getCommentList() {
-        Long id = getArguments().getLong(Const.CURRENT_USER_ID);
+        currentUser = getArguments().getLong(Const.CURRENT_USER_ID);
         ApiService apiService = ApiManager.getApi().create(ApiService.class);
-        apiService.getComments(id, 0,10).enqueue(new Callback<List<Comment>>() {
+        apiService.getComments(currentUser, 0,10).enqueue(new Callback<List<Comment>>() {
             @Override
             public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
                 LogUtil.log("TAG", "onResponse");
@@ -84,8 +88,9 @@ public class RecycleCommetsFragment extends Fragment implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_add_comment:
-                AlertAddComent.getInstance().setArguments(getArguments());
-                AlertAddComent.getInstance().show(getChildFragmentManager(), Const.DIALOG_ADD_COMENT);
+                AlertAddComent alertAddComent = new AlertAddComent();
+                alertAddComent.setArguments(getArguments());
+                alertAddComent.show(getChildFragmentManager(), Const.DIALOG_ADD_COMENT);
                 break;
             case R.id.btn_comments_close:
                 RecycleCardsFragment main = (RecycleCardsFragment) getActivity().getSupportFragmentManager().findFragmentByTag(Const.FRAGMENT_MAIN_TAG);
@@ -103,10 +108,45 @@ public class RecycleCommetsFragment extends Fragment implements View.OnClickList
     }
 
     private void updateComment() {
+        ApiService apiService = ApiManager.getApi().create(ApiService.class);
+        apiService.updateComment(currentUser,currentComment,mCommentList.get(currentComment)).enqueue(new Callback<Comment>() {
+            @Override
+            public void onResponse(Call<Comment> call, Response<Comment> response) {
+                LogUtil.log("TAG", "onResponse: "+response.message());
+                LogUtil.log("TAG", "onResponse: "+response.body());
+                if(response.code()>=200 && response.code()<=208){
+                    mCommentList.set(currentComment,response.body());
+                    mAdapter.notifyDataSetChanged();
+                    UiUtil.showToast(getActivity(), "request successful update");
+                }
+            }
 
+            @Override
+            public void onFailure(Call<Comment> call, Throwable t) {
+
+            }
+        });
     }
 
     private void removeComent() {
+        ApiService apiService = ApiManager.getApi().create(ApiService.class);
+        apiService.removeComment(currentUser,currentComment).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                LogUtil.log("TAG", "onResponse: "+response.message());
+                LogUtil.log("TAG", "onResponse: "+response.body());
+                if(response.code()>=200 && response.code()<=208){
+                    mCommentList.remove(currentComment);
+                    mAdapter.notifyDataSetChanged();
+                    UiUtil.showToast(getActivity(), "comment successful remove");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
 
     }
 

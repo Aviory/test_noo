@@ -31,17 +31,9 @@ import retrofit2.Response;
  */
 
 public class AlertAddComent extends DialogFragment implements View.OnClickListener {
-    private static AlertAddComent mInstance;
     private Button mBtnClose;
     private Button mBtnSendMsg;
     private EditText mTextBody;
-
-    public static AlertAddComent getInstance() {
-        if(mInstance ==null)
-            mInstance = new AlertAddComent();
-
-        return mInstance;
-    }
 
     @Nullable
     @Override
@@ -80,10 +72,13 @@ public class AlertAddComent extends DialogFragment implements View.OnClickListen
         apiService.sendMsg(id,txt).enqueue(new Callback<RequestComment>() {
             @Override
             public void onResponse(Call<RequestComment> call, Response<RequestComment> response) {
-                LogUtil.log("TAG", "onResponse: "+response.message());
-                mTextBody.setText("");
-                UiUtil.showToast(getActivity(), "message successful sent");
-                dismiss();
+                LogUtil.log("TAG", "onFailure: "+response.message());
+                LogUtil.log("TAG", "onFailure: "+response.body());
+                if(response.code()>=200 && response.code()<=208){
+                    mTextBody.setText("");
+                    UiUtil.showToast(getActivity(), "request successful remove");
+                    dismiss();
+                }
             }
 
             @Override
