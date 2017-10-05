@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.findchildren.avi.test.Colors;
 import com.findchildren.avi.test.R;
 import com.findchildren.avi.test.models.Request;
+import com.findchildren.avi.test.utils.LogUtil;
 
 import java.util.List;
 
@@ -49,6 +50,12 @@ public class CardRecycleAdapter extends RecyclerView.Adapter<CardRecycleAdapter.
                 mOnClick.onClickCard(position);
             }
         });
+        LogUtil.log("TAG", "getAdapterPosition "+holder.getAdapterPosition());
+        LogUtil.log("TAG", "getAdapterPosition "+holder.getOldPosition());
+        if(holder.getAdapterPosition()==getItemCount()-1){
+            mOnClick.onScrollChange(position);
+        }
+
         if(mList.get(position).getStatus().equals("SEARCHING")){
             holder.mContainerCardView.setBackgroundColor(Colors.RED);
         }else

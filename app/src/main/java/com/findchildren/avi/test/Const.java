@@ -22,4 +22,5 @@ public class Const {
     public static final String ALERT_TYPE_ADD_MSG = "addMsg";
     public static final String ALERT_TYPE_UPDATE_MSG = "updateMsg";
 
+    public static final int LIMIT_LOAD_REQUEST = 10;
 }

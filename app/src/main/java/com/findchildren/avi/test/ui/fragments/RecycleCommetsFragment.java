@@ -3,6 +3,7 @@ package com.findchildren.avi.test.ui.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.findchildren.avi.test.ui.alerts.AlertChangeComment;
 import com.findchildren.avi.test.utils.LogUtil;
 import com.findchildren.avi.test.utils.UiUtil;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -35,7 +37,7 @@ import retrofit2.Response;
  * Created by Avi on 28.09.2017.
  */
 
-public class RecycleCommetsFragment extends Fragment implements View.OnClickListener, CommentRecycleAdapter.OnCommentClicked, AlertAddComent.CallBack {
+public class RecycleCommetsFragment extends Fragment implements View.OnClickListener, CommentRecycleAdapter.OnCommentClicked, AlertAddComent.CallBack, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.comment_recycle)
     protected RecyclerView recyclerView;
@@ -43,6 +45,9 @@ public class RecycleCommetsFragment extends Fragment implements View.OnClickList
     protected Button btnAddComment;
     @BindView(R.id.btn_comments_close)
     protected Button btnCommentClose;
+    @BindView(R.id.refreshView)
+    protected SwipeRefreshLayout refreshLayout;
+
 
     private List<Comment> mCommentList;
     private CommentRecycleAdapter mAdapter;
@@ -57,28 +62,50 @@ public class RecycleCommetsFragment extends Fragment implements View.OnClickList
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recycle_comments, container, false);
         ButterKnife.bind(this, rootView);
+
+        refreshLayout.setOnRefreshListener(this);
+        mCommentList = new LinkedList<Comment>();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new CommentRecycleAdapter();
         mAdapter.setListener(this);
+        recyclerView.setAdapter(mAdapter);
         btnAddComment.setOnClickListener(this);
         btnCommentClose.setOnClickListener(this);
-        getCommentList();
+        getCommentList(mCommentList.size());
         return rootView;
     }
 
-    private void getCommentList() {
+    private void getCommentList(final int startPosition) {
         currentUser = getArguments().getLong(Const.CURRENT_USER_ID);
         ApiService apiService = ApiManager.getApi().create(ApiService.class);
-        apiService.getComments(currentUser, 0,10).enqueue(new Callback<List<Comment>>() {
+        apiService.getComments(currentUser, startPosition,Const.LIMIT_LOAD_REQUEST).enqueue(new Callback<List<Comment>>() {
             @Override
             public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
-                LogUtil.log("TAG", "onResponse");
                 if(response.code()>=200 && response.code()<=202) {
+                    refreshLayout.setRefreshing(false);
+                    if(response.body().size()!=0){
+                        if(startPosition==0){
+                            if( mCommentList.size()!=0){
+                                for (int i=0;i<response.body().size();i++){
+                                    if(mCommentList.get(i).getId()==(response.body().get(i).getId())){
+                                        mCommentList.set(i,response.body().get(i));
+                                    }else {
+                                        if(i!=0){
+                                            mAdapter.notifyDataSetChanged();
+                                        }
+                                        return;
+                                    }
+                                }
+                            }else{
+                                mCommentList.addAll(response.body());
+                                mAdapter.notifyDataSetChanged();
+                            }
 
-                    List<Comment> listComment = response.body();
-                    mAdapter.setList(listComment);
-                    recyclerView.setAdapter(mAdapter);
-                    mCommentList = listComment;
+                        }else{
+                            mCommentList.addAll(response.body());
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }
                 }
             }
 
@@ -129,7 +156,9 @@ public class RecycleCommetsFragment extends Fragment implements View.OnClickList
                 if(response.code()>=200 && response.code()<=202){
                     UiUtil.showToast(getActivity(), "request successful remove");
                     alertAddComent.dismiss();
-                    getCommentList();
+                    RequestComment newMsg= response.body();
+                    mCommentList.add(newMsg);
+                    mAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -151,7 +180,9 @@ public class RecycleCommetsFragment extends Fragment implements View.OnClickList
                 if(response.code()>=200 && response.code()<=202){
                     UiUtil.showToast(getActivity(), "request successful update");
                     alertAddComent.dismiss();
-                    getCommentList();
+                    RequestComment newMsg= response.body();
+                    mCommentList.set(currentComment, newMsg);
+                    mAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -171,7 +202,9 @@ public class RecycleCommetsFragment extends Fragment implements View.OnClickList
                 LogUtil.log("TAG", "onResponse: "+response.body());
                 if(response.code()>=200 && response.code()<=202){
                     alertChangeComment.dismiss();
-                    getCommentList();
+//                    getCommentList();
+                    mCommentList.remove(currentComment);
+                    mAdapter.notifyDataSetChanged();
                     UiUtil.showToast(getActivity(), "comment successful remove");
                 }
             }
@@ -194,13 +227,7 @@ public class RecycleCommetsFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onScrollChange(int position) {
-        ApiService apiService = ApiManager.getApi().create(ApiService.class);
-//        apiService.
-    }
-
-    @Override
-    public void onLongClick(int position) {
-
+        getCommentList(mCommentList.size());
     }
 
     @Override
@@ -212,5 +239,10 @@ public class RecycleCommetsFragment extends Fragment implements View.OnClickList
         if(type.equals(Const.ALERT_TYPE_UPDATE_MSG)){
             updateComment(msg);
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        getCommentList(0);
     }
 }

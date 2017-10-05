@@ -21,16 +21,15 @@ import butterknife.ButterKnife;
 
 public class CommentRecycleAdapter extends RecyclerView.Adapter<CommentRecycleAdapter.ViewHolder> {
     private List<Comment> mList;
-    private OnCommentClicked listener;
+    private OnCommentClicked onClickComment;
 
-    public void setListener(OnCommentClicked listener) {
-        this.listener = listener;
+    public void setListener(OnCommentClicked onClickComment) {
+        this.onClickComment = onClickComment;
     }
 
     public interface OnCommentClicked{
         void onClickComment(int position);
         void onScrollChange(int position);
-        void onLongClick(int position);
     }
 
     @Override
@@ -47,9 +46,12 @@ public class CommentRecycleAdapter extends RecyclerView.Adapter<CommentRecycleAd
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onClickComment(position);
+                onClickComment.onClickComment(position);
             }
         });
+        if(holder.getAdapterPosition()==getItemCount()-1){
+            onClickComment.onScrollChange(position);
+        }
     }
 
     @Override

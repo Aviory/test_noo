@@ -152,6 +152,7 @@ public class CardFragment extends Fragment implements View.OnClickListener {
     }
 
     private void onBackPressed(){
+
         RecycleCardsFragment main = (RecycleCardsFragment) getActivity().getSupportFragmentManager().findFragmentByTag(Const.FRAGMENT_MAIN_TAG);
         main.removeFrag(this);
     }
