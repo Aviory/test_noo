@@ -24,6 +24,9 @@ import com.findchildren.avi.test.utils.UiUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by avi on 03.10.17.
@@ -88,20 +91,19 @@ public class UpdateRequestFragment extends Fragment implements View.OnClickListe
         ApiService apiService = ApiManager.getApi().create(ApiService.class);
 //        long id = getArguments().getLong(Const.CURRENT_USER_ID);
 
-        apiService.updateRequest(request.getId(), newRequest).enqueue(new Callback<Request>() {
-            @Override
-            public void onResponse(Call<Request> call, Response<Request> response) {
-                if(response.code()>=200 && response.code()<=208){
-                    close();
-                    UiUtil.showToast(getActivity(), "message successful sent");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Request> call, Throwable t) {
-
-            }
-        });
+        apiService.updateRequest(request.getId(), newRequest)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .doOnNext(new Action1<Response<Request>>() {
+                    @Override
+                    public void call(Response<Request> response) {
+                        if(response.code()>=200 && response.code()<=208){
+                            close();
+                            UiUtil.showToast(getActivity(), "message successful sent");
+                        }
+                    }
+                })
+                .subscribe();
     }
 
     @Override

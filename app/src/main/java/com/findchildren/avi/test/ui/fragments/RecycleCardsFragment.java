@@ -32,6 +32,9 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Avi on 27.09.2017.
@@ -80,9 +83,12 @@ public class RecycleCardsFragment extends Fragment implements CardRecycleAdapter
 
     private void searchAll(final int startPosition){
         ApiService apiService = ApiManager.getApi().create(ApiService.class);
-        apiService.getAll(startPosition,Const.LIMIT_LOAD_REQUEST).enqueue(new Callback<List<Request>>() {
+        apiService.getAll(startPosition,Const.LIMIT_LOAD_REQUEST)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .doOnNext(new Action1<Response<List<Request>>>() {
             @Override
-            public void onResponse(Call<List<Request>> call, Response<List<Request>> response) {
+            public void call(Response<List<Request>> response) {
                 if(response.code()>=200 && response.code()<=202) {
                     refreshLayout.setRefreshing(false);
                     if(response.body().size()!=0){
@@ -110,12 +116,8 @@ public class RecycleCardsFragment extends Fragment implements CardRecycleAdapter
                     }
                 }
             }
-
-            @Override
-            public void onFailure(Call<List<Request>> call, Throwable t) {
-                LogUtil.log("TAG", "onFailure");
-            }
-        });
+        })
+        .subscribe();
     }
     public void getFragmentComment(long position) {
         RecycleCommetsFragment recycleCommetsFragment = new RecycleCommetsFragment();

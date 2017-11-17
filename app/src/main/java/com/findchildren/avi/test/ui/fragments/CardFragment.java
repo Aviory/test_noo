@@ -24,6 +24,9 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Avi on 27.09.2017.
@@ -124,22 +127,20 @@ public class CardFragment extends Fragment implements View.OnClickListener {
 
     private void sendDelete() {
         ApiService apiService = ApiManager.getApi().create(ApiService.class);
-        apiService.deleteRequest(request.getId()).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                LogUtil.log("TAG", "onFailure: "+response.message());
-                LogUtil.log("TAG", "onFailure: "+response.body());
-                if(response.code()>=200 && response.code()<=208){
-                    onBackPressed();
-                    UiUtil.showToast(getActivity(), "request successful remove");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                LogUtil.log("TAG", "onFailure: "+t.getMessage());
-            }
-        });
+        apiService.deleteRequest(request.getId())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .doOnNext(new Action1<Response<ResponseBody>>() {
+                    @Override
+                    public void call(Response<ResponseBody> response) {
+                        LogUtil.log("TAG", "onFailure: "+response.message());
+                        LogUtil.log("TAG", "onFailure: "+response.body());
+                        if(response.code()>=200 && response.code()<=208){
+                            onBackPressed();
+                            UiUtil.showToast(getActivity(), "request successful remove");
+                        }
+                    }
+                });
     }
 
     private void sendUpdate() {

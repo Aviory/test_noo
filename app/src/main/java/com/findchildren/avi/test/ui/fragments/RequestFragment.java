@@ -24,6 +24,11 @@ import com.findchildren.avi.test.utils.UiUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Avi on 01.10.2017.
@@ -87,21 +92,27 @@ public class RequestFragment extends Fragment implements View.OnClickListener {
         ApiService apiService = ApiManager.getApi().create(ApiService.class);
 //        long id = getArguments().getLong(Const.CURRENT_USER_ID);
 
-        apiService.sendNewRequest(newRequest).enqueue(new Callback<Request>() {
-            @Override
-            public void onResponse(Call<Request> call, Response<Request> response) {
-                if(response.code()>=200 && response.code()<=208){
-                    close();
-                    UiUtil.showToast(getActivity(), "message successful sent");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Request> call, Throwable t) {
-                LogUtil.log("TAG", "onFailure: "+t.getMessage());
-                UiUtil.showToast(getActivity(), t.getMessage());
-            }
-        });
+        apiService.sendNewRequest(newRequest)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .doOnNext(new Action1<Response<Request>>() {
+                    @Override
+                    public void call(Response<Request> response) {
+                        if(response.code()>=200 && response.code()<=208){
+                            close();
+                            UiUtil.showToast(getActivity(), "message successful sent");
+                        }
+                    }
+                })
+                .onErrorResumeNext(new Func1<Throwable, Observable<? extends Response<Request>>>() {
+                    @Override//todo need check
+                    public Observable<? extends Response<Request>> call(Throwable throwable) {
+                        LogUtil.log("TAG", "onFailure: "+throwable.getMessage());
+                        UiUtil.showToast(getActivity(), throwable.getMessage());
+                        return null;
+                    }
+                })
+                .subscribe();
     }
 
     @Override

@@ -32,6 +32,9 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Avi on 28.09.2017.
@@ -78,9 +81,12 @@ public class RecycleCommetsFragment extends Fragment implements View.OnClickList
     private void getCommentList(final int startPosition) {
         currentUser = getArguments().getLong(Const.CURRENT_USER_ID);
         ApiService apiService = ApiManager.getApi().create(ApiService.class);
-        apiService.getComments(currentUser, startPosition,Const.LIMIT_LOAD_REQUEST).enqueue(new Callback<List<Comment>>() {
+        apiService.getComments(currentUser, startPosition,Const.LIMIT_LOAD_REQUEST)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .doOnNext(new Action1<Response<List<Comment>>>() {
             @Override
-            public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
+            public void call(Response<List<Comment>> response) {
                 if(response.code()>=200 && response.code()<=202) {
                     refreshLayout.setRefreshing(false);
                     if(response.body().size()!=0){
@@ -108,12 +114,8 @@ public class RecycleCommetsFragment extends Fragment implements View.OnClickList
                     }
                 }
             }
-
-            @Override
-            public void onFailure(Call<List<Comment>> call, Throwable t) {
-                LogUtil.log("TAG", "onFailure");
-            }
-        });
+        })
+        .subscribe();
     }
 
     @Override
@@ -148,73 +150,67 @@ public class RecycleCommetsFragment extends Fragment implements View.OnClickList
         ApiService apiService = ApiManager.getApi().create(ApiService.class);
 
         LogUtil.log("TAG", "id: "+currentUser+" txt"+msg);
-        apiService.sendMsg(currentUser,msg).enqueue(new Callback<RequestComment>() {
-            @Override
-            public void onResponse(Call<RequestComment> call, Response<RequestComment> response) {
-                LogUtil.log("TAG", "onFailure: "+response.message());
-                LogUtil.log("TAG", "onFailure: "+response.body());
-                if(response.code()>=200 && response.code()<=202){
-                    UiUtil.showToast(getActivity(), "request successful remove");
-                    alertAddComent.dismiss();
-                    RequestComment newMsg= response.body();
-                    mCommentList.add(newMsg);
-                    mAdapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RequestComment> call, Throwable t) {
-                LogUtil.log("TAG", "onFailure: "+t.getMessage());
-            }
-        });
-
+        apiService.sendMsg(currentUser,msg)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .doOnNext(new Action1<Response<RequestComment>>() {
+                    @Override
+                    public void call(Response<RequestComment> response) {
+                        LogUtil.log("TAG", "onFailure: "+response.message());
+                        LogUtil.log("TAG", "onFailure: "+response.body());
+                        if(response.code()>=200 && response.code()<=202){
+                            UiUtil.showToast(getActivity(), "request successful remove");
+                            alertAddComent.dismiss();
+                            RequestComment newMsg= response.body();
+                            mCommentList.add(newMsg);
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }
+                })
+                .subscribe();
     }
 
     private void updateComment(String msg) {
         ApiService apiService = ApiManager.getApi().create(ApiService.class);
-        apiService.updateComment(currentUser,mCommentList.get(currentComment).getId(),msg).enqueue(new Callback<RequestComment>() {
-            @Override
-            public void onResponse(Call<RequestComment> call, Response<RequestComment> response) {
-                LogUtil.log("TAG", "onResponse updateComment: "+response.message());
-                LogUtil.log("TAG", "onResponse updateComment: "+response.body());
-                if(response.code()>=200 && response.code()<=202){
-                    UiUtil.showToast(getActivity(), "request successful update");
-                    alertAddComent.dismiss();
-                    RequestComment newMsg= response.body();
-                    mCommentList.set(currentComment, newMsg);
-                    mAdapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RequestComment> call, Throwable t) {
-                LogUtil.log("TAG", "onFailure: "+t.getMessage());
-            }
-        });
+        apiService.updateComment(currentUser,mCommentList.get(currentComment).getId(),msg)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .doOnNext(new Action1<Response<RequestComment>>() {
+                    @Override
+                    public void call(Response<RequestComment> response) {
+                        LogUtil.log("TAG", "onResponse updateComment: "+response.message());
+                        LogUtil.log("TAG", "onResponse updateComment: "+response.body());
+                        if(response.code()>=200 && response.code()<=202){
+                            UiUtil.showToast(getActivity(), "request successful update");
+                            alertAddComent.dismiss();
+                            RequestComment newMsg= response.body();
+                            mCommentList.set(currentComment, newMsg);
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }
+                })
+                .subscribe();
     }
 
     private void removeComent() {
         ApiService apiService = ApiManager.getApi().create(ApiService.class);
-        apiService.removeComment(currentUser,mCommentList.get(currentComment).getId()).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                LogUtil.log("TAG", "onResponse: "+response.message());
-                LogUtil.log("TAG", "onResponse: "+response.body());
-                if(response.code()>=200 && response.code()<=202){
-                    alertChangeComment.dismiss();
+        apiService.removeComment(currentUser,mCommentList.get(currentComment).getId())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .doOnNext(new Action1<Response<ResponseBody>>() {
+                    @Override
+                    public void call(Response<ResponseBody> response) {
+                        LogUtil.log("TAG", "onResponse: "+response.message());
+                        LogUtil.log("TAG", "onResponse: "+response.body());
+                        if(response.code()>=200 && response.code()<=202){
+                            alertChangeComment.dismiss();
 //                    getCommentList();
-                    mCommentList.remove(currentComment);
-                    mAdapter.notifyDataSetChanged();
-                    UiUtil.showToast(getActivity(), "comment successful remove");
+                            mCommentList.remove(currentComment);
+                            mAdapter.notifyDataSetChanged();
+                            UiUtil.showToast(getActivity(), "comment successful remove");
+                    }
                 }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                LogUtil.log("TAG", "onFailure: "+t.getMessage());
-            }
-        });
-
+            });
     }
 
     @Override
